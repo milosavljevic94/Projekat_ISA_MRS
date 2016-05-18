@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restoraunt</title>
+    <meta charset="utf-8" />
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}" type = "text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        html,
+        body {
+          height:100%
+        }
+    </style>
+</head>
+
+<body class="body" style="background-color:#f6f6f6">
+    <div class="container-fluid" style="min-height:95%; ">
+        <div class="row">
+              <div class="col-sm-2">
+                  <br>
+                  <center>
+                    {% if guest.profile_picture %}
+                    <img src='{{ guest.profile_picture.url }}' class="img-responsive" alt="face">
+                    {% endif %}
+                    <!-- {{ form.profile_picture }} -->
+                  </center>
+              </div>
+              <div class="col-sm-10">
+                  <br>
+                  <center>
+                  <h3>{{ guest.name }} {{ guest.surname }}</h3>
+                  </center>
+              </div>
+        </div><hr>
+
+        <div class="row">
+          <div class="col-sm-2">
+          <br>
+
+          <br>
+           <!-- Great, til you resize. -->
+            <!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
+            <div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
+              <ul class="nav nav-pills nav-stacked">
+                <!-- ../ oznacava koliko puta da se vrati unazad i tu rec zameni sa datom -->
+                <li><a href='../restorani'>Restorani</a></li>
+                <li><a href='../prijatelji'>Prijatelji</a></li>
+                <li><a href='../profil'>Profil</a></li>
+                <li><a href='../logedout/'>Odjava</a></li>
+              </ul>
+            </div> <!--well bs-sidebar affix-->
+          </div> <!--col-sm-2-->
+          <div class="col-sm-10">
+          <!-- <div class="form-horizontal"> -->
+          <!-- <div class="col-sm-6 col-sm-offset-3"> -->
+
+            <!-- <div class='container-fluid'> -->
+            <!-- <div class='form-group form-group-lg'> -->
+            <div class="col-sm-6 col-sm-offset-3">
+            <br><br>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        {%if "profile_updated" in message.tags %}
+                            <div class="alert alert-success fade in">
+                                <ul class="messages">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                    {{ message }}
+                                </ul>
+                            </div>
+                        {% elif "no_changes_made" in message.tags %}
+                            <div class="alert alert-info fade in">
+                                <ul class="messages">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                    {{ message }}
+                                </ul>
+                            </div>
+                        {% elif "password_changed" in message.tags %}
+                            <div class="alert alert-success fade in">
+                                <ul class="messages">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                    {{ message }}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Izmenite vase podatke</h4>
+                </div>
+                <!-- Da bi mogli da ucitamo sliku iz nekog fajla na disku potrebno je dodati enctype="multipart/form-data" -->
+                <form action='../update/' method="POST" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="form-group form-group-lg">
+                        <label class="control-label" for="formGroupInputLarge">Ime: </label>
+                        <!-- <input type="text" name="form-first-name" placeholder="First name..." class="form-first-name form-control" id="form-first-name"> -->
+                        {{ form.name }}
+                    </div>
+                    <div class="form-group form-group-lg">
+                        <label class="control-label" for="formGroupInputLarge">Prezime: </label>
+                        <!-- <input type="text" name="form-last-name" placeholder="Last name..." class="form-last-name form-control" id="form-last-name"> -->
+                        {{ form.surname }}
+                    </div>
+                    <div class="form-group form-group-lg">
+                        <label class="control-label" for="formGroupInputLarge">Email adresa: </label>
+                        <!-- <input type="text" name="form-email" placeholder="Email..." class="form-email form-control" id="form-email"> -->
+                        {{ form.email }}
+                    </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {%if "email_exists" in message.tags %}
+                                <div class="alert alert-danger fade in">
+                                    <ul class="messages">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                        {{ message }}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group form-group-lg">
+                        <label class="control-label" for="formGroupInputLarge">Izaberite profilnu sliku: </label>
+                        <div class="col-sm-10">
+                            <!-- <input type="text" name="form-email" placeholder="Email..." class="form-email form-control" id="form-email"> -->
+                            {{ form.profile_picture }} <!-- Trigger the modal with a button -->
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-lg active">Sacuvaj izmene</button>
+                    </div>
+                </form>
+                <br><br>
+                <div class="modal-header">
+                    <h4 class="modal-title">Izmenite lozinku</h4>
+                </div>
+                <form action='../changepassword/' method="POST" class="form-horizontal">{% csrf_token %}
+                    <div class="form-group form-group-lg">
+                        <!-- <textarea name="form-about-yourself" placeholder="About yourself..."
+                            class="form-about-yourself form-control" id="form-about-yourself"></textarea> -->
+                        {{ change_password_form.current_password}}
+                    </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {%if "wrong_current_password" in message.tags %}
+                                <div class="alert alert-danger fade in">
+                                    <ul class="messages">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                        {{ message }}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group form-group-lg">
+                        <!-- <textarea name="form-about-yourself" placeholder="About yourself..."
+                        class="form-about-yourself form-control" id="form-about-yourself"></textarea> -->
+                        {{ change_password_form.guest_password}}
+                    </div>
+                    <div class="form-group form-group-lg">
+                        <!-- <textarea name="form-about-yourself" placeholder="About yourself..."
+                        class="form-about-yourself form-control" id="form-about-yourself"></textarea> -->
+                        {{ change_password_form.repeat_guest_password}}
+                    </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {%if "changed_password_length_error" in message.tags %}
+                                <div class="alert alert-danger fade in">
+                                    <ul class="messages">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                        {{ message }}
+                                    </ul>
+                                </div>
+                            {% elif "changed_passwords_dont_match_error" in message.tags %}
+                                <div class="alert alert-danger fade in">
+                                    <ul class="messages">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                        {{ message }}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-lg active">Izmeni lozinku</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+</html>

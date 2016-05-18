@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        {% load staticfiles %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Forma za prijavu</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href='{% static "assets/bootstrap/css/bootstrap.min.css" %}'>
+        <link rel="stylesheet" href='{% static "assets/font-awesome/css/font-awesome.min.css" %}'>
+        <link rel="stylesheet" href='{% static "assets/css/form-elements.css" %}'>
+        <link rel="stylesheet" href='{% static "assets/css/style.css" %}'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <!-- <link rel="shortcut icon" href='{% static "assets/ico/favicon.png" %}'> -->
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href='{% static "assets/ico/apple-touch-icon-144-precomposed.png" %}'> -->
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="114x114" href='{% static "assets/ico/apple-touch-icon-114-precomposed.png" %}'> -->
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="72x72" href='{% static "assets/ico/apple-touch-icon-72-precomposed.png" %}'> -->
+        <!-- <link rel="apple-touch-icon-precomposed" href='{% static "assets/ico/apple-touch-icon-57-precomposed.png" %}'> -->
+
+    </head>
+
+    <!-- <body background='{% static "assets/img/backgrounds/pozadina.jpg" %}'> -->
+
+    <!-- Top menu -->
+    <nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
+      <div class="container">
+        <!-- <div class="navbar-header"> -->
+          <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1"> -->
+            <!-- <span class="sr-only">Toggle navigation</span> -->
+            <!-- <span class="icon-bar"></span> -->
+            <!-- <span class="icon-bar"></span> -->
+            <!-- <span class="icon-bar"></span> -->
+          <!-- </button> -->
+          <!-- <a class="navbar-brand" href="index.html">Forma za prijavu</a> -->
+        <!-- </div> -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="top-navbar-1">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <span class="li-text">
+                Login via:
+              </span>
+              <!-- <a href="#"><strong>links</strong></a> -->
+              <span class="li-social">
+                <a href="www.facebook.com"><i class="fa fa-facebook"></i></a>
+                <a href="www.gmail.com"><i class="fa fa-envelope"></i></a>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+        <!-- Top content -->
+        <div class="top-content">
+
+            <!-- <div class="inner-bg"> -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-7 text">
+                            <h1><strong>Restoraunt</strong> Forma za prijavu</h1>
+                            <div class="description">
+                              <p>
+                                Ukoliko niste registrovani, pritisnite dugme i registrujte se.
+                              </p>
+                            </div>
+                            <div class="top-big-link">
+                              <a class="btn btn-link-2" href="/gost/registration/">Registrujte se</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 form-box">
+                          <div class="form-top">
+                            <div class="form-top-left">
+                              <h3>Ulogujte se odmah</h3>
+                                <p>Popunite formu i ulogujte se na svoj profil</p>
+                            </div>
+                            <div class="form-top-right">
+                              <i class="fa fa-pencil"></i>
+                            </div>
+                            </div>
+                            <div class="form-bottom">
+                                <form method="POST" class="registration-form">{% csrf_token %}
+                                    <div class="form-group">
+                                        <!-- <input type="text" name="email" placeholder="Email" class="form-email form-control" id="form-email"> -->
+                                        {{ form.email_address }}
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- <input type="password" name="password" placeholder="Lozinka"
+                                        class="form-about-yourself form-control" id="form-about-yourself"></input> -->
+                                        {{ form.password}}
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                {% if 'login_error' in message.tags %}
+                                                    <div class="alert alert-danger fade in">
+                                                        <ul class="messages">
+                                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                            <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{% if "html_safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</li> -->
+                                                            {{ message }}
+                                                        </ul>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <button type="submit" class="btn">Prijavite se</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+
+        </div>
+
+
+        <!-- Javascript -->
+        <script src='{% static "assets/js/jquery-1.11.1.min.js" %}'></script>
+        <script src='{% static "assets/bootstrap/js/bootstrap.min.js" %}'></script>
+        <script src='{% static "assets/js/jquery.backstretch.min.js" %}'></script>
+        <script src='{% static "assets/js/retina-1.1.0.min.js" %}'></script>
+        <script src='{% static "assets/js/scripts.js" %}'></script>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+    </body>
+
+</html>
